@@ -39,8 +39,25 @@
   border: 0.5px solid var(--green);
   cursor: pointer;
   min-width: 50px;
+  min-height: 50px;
 }
 
 .square.active{
   border : 0.5px solid var(--blue);
+}
+
+.square.blue {
+  background: blue;
+}
+
+.square.red{
+  background: red;
+}
+
+.square.yellow {
+  background: yellow;
+}
+
+.square.green{
+  background: green;
 }
