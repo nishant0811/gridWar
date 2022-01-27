@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --blue : #219F94;
+  --green : #C1DEAE;
+  --white : #F2F5C8;
+  --yellow : #E8E8A6;
+}
+
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.body{
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 500px 1fr;
+  margin: 32px;
+  width: 100%;
+  margin: auto;
+  background: var(--yellow);
+}
+
+
+.map{
+  display: grid;
+  grid-template-columns: repeat(20,1fr);
+}
+
+
+.square{
+  background: var(--white);
+  border: 0.5px solid var(--green);
+  cursor: pointer;
+}

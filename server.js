@@ -33,6 +33,12 @@ io.on('connection' , socket =>{
   })
 })
 
+
+
+app.get("/users" , (req,res)=>{
+  res.json(users)
+})
+
 server.listen(3000,()=>{
   console.log("Server Up on port 3000");
 })
