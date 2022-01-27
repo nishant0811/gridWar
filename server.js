@@ -53,6 +53,65 @@ function updatePlayerMap(){
         }
         else{
           usersMap[k].map[i][j] = gameMap[i][j];
+          if(usersMap[k].map[i][j].tower){
+            try{
+              usersMap[k].map[i+1][j] = gameMap[i+1][j];
+              if(usersMap[k].map[i+1][j].owned != usersMap[k].id){
+                usersMap[k].map[i+1][j].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i+1][j+1] = gameMap[i+1][j+1];
+              if(usersMap[k].map[i+1][j+1].owned != usersMap[k].id){
+                usersMap[k].map[i+1][j+1].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i+1][j-1] = gameMap[i+1][j-1];
+              if(usersMap[k].map[i+1][j-1].owned != usersMap[k].id){
+                usersMap[k].map[i+1][j-1].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i-1][j] = gameMap[i-1][j];
+              if(usersMap[k].map[i-1][j].owned != usersMap[k].id){
+                usersMap[k].map[i-1][j].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i-1][j+1] = gameMap[i-1][j+1];
+              if(usersMap[k].map[i-1][j+1].owned != usersMap[k].id){
+                usersMap[k].map[i-1][j+1].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i][j+1] = gameMap[i][j+1];
+              if(usersMap[k].map[i][j+1].owned != usersMap[k].id){
+                usersMap[k].map[i][j+1].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i][j-1] = gameMap[i][j-1];
+              if(usersMap[k].map[i][j-1].owned != usersMap[k].id){
+                usersMap[k].map[i][j-1].owned = ""
+              }
+            }
+            catch(e){}
+            try{
+              usersMap[k].map[i-1][j-1] = gameMap[i-1][j-1];
+              if(usersMap[k].map[i-1][j-1].owned != usersMap[k].id){
+                usersMap[k].map[i-1][j-1].owned = ""
+              }
+            }
+            catch(e){}
+          }
+
         }
       }
     }
@@ -80,11 +139,12 @@ io.on('connection' , socket =>{
       for(let j=0; j<mapSize ; j++){
         gameMap[i].push({
           owned : "",
-          troops : "",
+          troops : 0,
           goldMine : false,
           tower : false,
           fortification : false,
           color : "",
+          capital: false,
         })
       }
     }
@@ -112,6 +172,7 @@ io.on('connection' , socket =>{
             goldMine : false,
             tower : false,
             fortification : false,
+            capital : false,
             color : "",
           })
         }
@@ -123,6 +184,7 @@ io.on('connection' , socket =>{
         goldMine : true,
         tower : true,
         fortification : true,
+        capital : true,
         color : color[i],
       }
 
@@ -132,6 +194,7 @@ io.on('connection' , socket =>{
         goldMine : true,
         tower : true,
         fortification : true,
+        capital : true,
         color : color[i],
       }
 

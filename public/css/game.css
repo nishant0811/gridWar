@@ -31,6 +31,7 @@
   grid-template-columns: repeat(20,1fr);
   position: relative;
   overflow: scroll;
+  max-height: 100vh;
 }
 
 
@@ -40,6 +41,7 @@
   cursor: pointer;
   min-width: 50px;
   min-height: 50px;
+  text-align: center;
 }
 
 .square.active{
@@ -60,4 +62,14 @@
 
 .square.green{
   background: green;
+}
+
+.square .assets{
+  display: flex;
+  justify-content: space-between;
+  color : white;
+  font-weight: bold;
+  text-align: center;
+  font-size: 12px;
+  padding: 4px;
 }

@@ -10,8 +10,11 @@ socket.on('mapSize',(data)=>{
   document.getElementById('map').innerHTML= "";
   mapSize = data;
   for(let i=0; i<data ;i++){
-    for(let j=0;j<data;j++)
-    document.getElementById('map').innerHTML +=`<div class="square" id="${i}${j}"></div>`;
+    for(let j=0;j<data;j++){
+    document.getElementById('map').innerHTML +=`<div class="square">
+
+    </div>`;
+  }
   }
 })
 
@@ -27,7 +30,15 @@ socket.on('gameData' , (data)=>{
   let map = data.map;
   for(let i=0 ; i<mapSize ; i++){
     for(let j=0; j<mapSize ; j++){
-      document.getElementById('map').innerHTML +=`<div class="square ${map[i][j].color}" id="${i}${j}"></div>`;
+      document.getElementById('map').innerHTML +=`<div class="square ${map[i][j].color}" id="${i}${j}">
+      <div class="assets">
+          ${map[i][j].capital ? "<span>C</span>" : ""}
+          ${map[i][j].tower ? "<span>T</span>" : ""}
+          ${map[i][j].goldMine ? "<span>G</span>" : ""}
+          ${map[i][j].fortification ? "<span>F</span>" : ""}
+      </div>
+      ${map[i][j].troops}
+      </div>`;
     }
   }
 })
