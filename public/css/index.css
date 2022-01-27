@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+  --blue : #219F94;
+  --green : #C1DEAE;
+  --white : #F2F5C8;
+  --yellow : #E8E8A6;
+}
+
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+body{
+  background: var(--yellow);
+}
+
+.heading h1{
+  font-family: 'Comforter', cursive;
+  color : var(--blue);
+  font-size: 120px;
+  padding: 32px;
+  text-align: center;
+}
+
+
+.form {
+  width: 80%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form input{
+  padding: 8px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  border : 1px solid var(--green);
+  background: var(--white);
+  margin-bottom: 32px;
+  margin-top: 64px;
+
+}
+
+.form input::placeholder{
+  background: var(--white);
+}
+
+.button{
+  border : none;
+  outline: none;
+  background: var(--blue);
+  color : var(--white);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border : 1px solid var(--green);
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.button:hover{
+  transition: 0.5s;
+  color: var(--blue);
+  background: var(--white);
+
+}
