@@ -11,11 +11,14 @@ const io = socket(server)
 
 let users = []
 
+let mapSize = 20;
 
 io.on('connection' , socket =>{
   socket.on('joinRoom' , (data)=>{
     let user = { id : socket.id , username : data.username}
     users.push(user)
+    io.to(user.id).emit('mapSize',mapSize)
+    io.to(user.id).emit('setId',user.id)
     console.log(users);
   })
 

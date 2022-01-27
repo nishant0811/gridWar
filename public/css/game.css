@@ -18,7 +18,7 @@
 .body{
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 500px 1fr;
+  grid-template-columns: minmax(250px,10%)1fr;
   margin: 32px;
   width: 100%;
   margin: auto;
@@ -29,6 +29,8 @@
 .map{
   display: grid;
   grid-template-columns: repeat(20,1fr);
+  position: relative;
+  overflow: scroll;
 }
 
 
@@ -36,4 +38,9 @@
   background: var(--white);
   border: 0.5px solid var(--green);
   cursor: pointer;
+  min-width: 50px;
+}
+
+.square.active{
+  border : 0.5px solid var(--blue);
 }
