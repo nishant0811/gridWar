@@ -15,8 +15,13 @@ let energyCost = {
   moveCapital : 1,
   goldmine : 1,
   addTroops : 1,
+  attack : 1,
   tower : 2,
   fortification : 2
+}
+
+function StartGame(){
+  socket.emit('startGame');
 }
 
 
@@ -88,11 +93,24 @@ function add(){
   }
 }
 
+function endTurn(){
+  let payload ={
+    id : playerId
+  }
+  socket.emit('endTurn' , payload)
+}
+
+
+
 function setTo(id){
   sendTo = id;
   let troops = parseInt(prompt(`Enter the Number of Troops you want to send`));
 
   if(troops >0){
+    if(energy < energyCost.attack){
+      alert("Not Enough Energy");
+      return;
+    }
     let payload ={
       id : playerId,
       troops : troops,
@@ -102,6 +120,8 @@ function setTo(id){
     }
 
     socket.emit('addAction' , payload);
+    energy -= energyCost.attack;
+    updateStats();
   }
 }
 
