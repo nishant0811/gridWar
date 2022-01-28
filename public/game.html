@@ -10,10 +10,35 @@
 <body>
   <div class="body">
     <div class="actions">
+      <div class="energy">
+        <p>Enregy : <span id="energy"></span> </p>
+      </div>
+      <div class="gold">
+        <p>Gold : <span id="gold"></span> </p>
+      </div>
+      <div class="energy">
+        <p>Territory : <span id="territory"></span> </p>
+      </div>
 
+      <div class="buttons">
+        <button  onclick="build('GoldMine')" id="buildGold">Build Gold Mine</button>
+        <button  onclick="build('Fortification')" id="buildFortification">Fortify Territory</button>
+        <button onclick="build('Tower')" id="buildTower">Build Tower</button>
+        <button onclick="add()" id="addTroops">Add Troops</button>
+        <button onclick="moveCapital()" id="moveCapital">Capital</button>
+        <button class="end-turn" onclick="endTrun()">End Turn</button>
+      </div>
+
+
+      <div class="ended-turn">
+        <p>Player Ended Their Turn</p>
+        <div class="ended">
+
+        </div>
+      </div>
     </div>
     <div class="map" id="map">
-    
+
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qs/6.10.1/qs.min.js" integrity="sha512-aTKlYRb1QfU1jlF3k+aS4AqTpnTXci4R79mkdie/bp6Xm51O5O3ESAYhvg6zoicj/PD6VYY0XrYwsWLcvGiKZQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -5,6 +5,7 @@
   --green : #C1DEAE;
   --white : #F2F5C8;
   --yellow : #E8E8A6;
+  --orange : #FFAB76;
 }
 
 
@@ -23,6 +24,15 @@
   width: 100%;
   margin: auto;
   background: var(--yellow);
+}
+
+.actions{
+  padding: 8px;
+}
+
+.actions>div{
+  margin-bottom: 8px;
+  text-align: center;
 }
 
 
@@ -45,7 +55,7 @@
 }
 
 .square.active{
-  border : 0.5px solid var(--blue);
+  border : 0.5px solid black;
 }
 
 .square.blue {
@@ -72,4 +82,37 @@
   text-align: center;
   font-size: 12px;
   padding: 4px;
+}
+
+.buttons{
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+
+.buttons button.hidden{
+  opacity: 0;
+  visibility: hidden;
+}
+
+.buttons button{
+  display: inline-block;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--blue);
+  text-align: center;
+  color : var(--white);
+  text-decoration: none;
+  width: 75%;
+  margin: auto;
+  margin-bottom: 16px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.buttons .end-turn{
+  background: var(--orange)
 }

@@ -25,6 +25,8 @@ let players = [];
 let xOcc = [];
 let yOcc = [];
 
+let actionList = [];
+
 function generatePosition(){
   let min =0;
   let max = mapSize-1;
@@ -203,7 +205,8 @@ io.on('connection' , socket =>{
         goldMine : 1,
         territory : 1,
         energy : 5,
-        gold : 200
+        gold : 200,
+        endTurn : 0,
       }
 
       gameStats.push(stats);
@@ -224,8 +227,16 @@ io.on('connection' , socket =>{
       });
 
       io.to(id).emit('gameData' , payload);
+      io.to(id).emit('stats' , gameStats[i]);
     }
   })
+
+
+  socket.on('addAction', (data)=>{
+    actionList.push(data);
+    console.log(actionList);
+  })
+
 
 
 
