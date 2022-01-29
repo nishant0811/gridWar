@@ -116,3 +116,37 @@
 .buttons .end-turn{
   background: var(--orange)
 }
+
+.waitingModal{
+  position: absolute;
+  width: 50%;
+  margin: auto;
+  padding: 32px;
+  border-radius: 16px;
+  background: white;
+  text-align: center;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  color : var(--blue);
+  transition: 0.5s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.waitingModal.active{
+  transition: 0.5s;
+  opacity: 1;
+  visibility: visible;
+}
+
+.waitingModal h2{
+    font-family: 'Comforter', cursive;
+    font-size: 40px;
+    letter-spacing: 2px;
+}
+
+.waitingModal img{
+  width: 30%;
+}

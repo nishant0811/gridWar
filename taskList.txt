@@ -1,0 +1,9 @@
+
+
+
+Move capital logic complete construction
+Capture Capital logic
+Winner logic
+What happens when the game ends?
+
+Name with their Colors;

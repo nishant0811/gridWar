@@ -11,7 +11,7 @@
   <div class="body">
     <div class="actions">
       <div class="energy">
-        <p>Enregy : <span id="energy"></span> </p>
+        <p>Eneregy : <span id="energy"></span> </p>
       </div>
       <div class="gold">
         <p>Gold : <span id="gold"></span> </p>
@@ -25,9 +25,8 @@
         <button  onclick="build('Fortification')" id="buildFortification">Fortify Territory</button>
         <button onclick="build('Tower')" id="buildTower">Build Tower</button>
         <button onclick="add()" id="addTroops">Add Troops</button>
-        <button onclick="moveCapital()" id="moveCapital">Capital</button>
-        <button class="end-turn" onclick="endTurn()">End Turn</button>
-        
+        <button onclick="moveCapital()" id="moveCapital">Move Capital</button>
+        <button class="end-turn" onclick="endTurn()" id="end-turn">End Turn</button>
       </div>
 
 
@@ -39,6 +38,12 @@
       </div>
     </div>
     <div class="map" id="map">
+
+    </div>
+
+    <div class="waitingModal active">
+      <img src="https://cdn.dribbble.com/users/107035/screenshots/1081316/mastersword.gif" alt="">
+      <h2 id="title">Waiting For Host to Start The Game</h2>
 
     </div>
   </div>

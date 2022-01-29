@@ -1,6 +1,9 @@
 const socket = io();
 
-let username = 'nishant'
+let {username} = Qs.parse(location.search,{
+  ignoreQueryPrefix: true
+})
+
 let playerId
 socket.emit('joinRoom' , {username})
 
@@ -20,8 +23,18 @@ let energyCost = {
   fortification : 2
 }
 
-function StartGame(){
-  socket.emit('startGame');
+
+disableButtons();
+disableEndTurn();
+
+
+
+function disableEndTurn(){
+  document.getElementById('end-turn').classList.add('hidden');
+}
+
+function enableEndTurn(){
+  document.getElementById('end-turn').classList.remove('hidden');
 }
 
 
@@ -49,6 +62,10 @@ function updateStats(){
 }
 
 
+function toggleWaitingModal(){
+  document.querySelector(".waitingModal").classList.toggle("active");
+}
+
 function active(id){
   if(activeId){
 
@@ -68,8 +85,27 @@ function active(id){
 }
 
 
+function moveCapital(){
+  if(energy < energyCost.moveCapital){
+    alert("Not Enough Energy");
+  }
+
+  let payload ={
+    type : "moveCapital",
+    id : playerId,
+    from : activeId
+  }
+
+  socket.emit("addAction" , payload);
+  energy -= energyCost.moveCapital
+  updateStats();
+}
+
 function add(){
   let addTroops = parseInt(prompt("Enter Number of Troops you want to add"));
+  if(isNaN(addTroops)){
+    return;
+  }
   if(gold < addTroops){
     alert("Not Enough Gold");
     return;
@@ -86,6 +122,8 @@ function add(){
       id : playerId,
       troops : addTroops
     }
+
+    console.log(payload);
     socket.emit("addAction",payload);
     gold -= addTroops
     energy -= energyCost.addTroops;
@@ -97,6 +135,10 @@ function endTurn(){
   let payload ={
     id : playerId
   }
+  disableButtons();
+  disableEndTurn();
+  toggleWaitingModal();
+  // enableWaitingModal();
   socket.emit('endTurn' , payload)
 }
 
@@ -178,6 +220,11 @@ socket.on('setId' , (data)=>{
 
 
 socket.on('gameData' , (data)=>{
+  disableButtons();
+  enableEndTurn();
+  document.querySelector(".ended").innerHTML = `
+  `;
+
   document.getElementById('map').innerHTML= "";
   let map = data.map;
   usermap = map;
@@ -196,7 +243,38 @@ socket.on('gameData' , (data)=>{
       </div>`;
     }
   }
+  toggleWaitingModal();
+  document.querySelector('#title').innerHTML = "Waiting For Other Players To Finsih Their turn"
 })
+
+socket.on('gameDataE' , (data)=>{
+  disableButtons();
+  disableEndTurn();
+  document.querySelector(".ended").innerHTML = `
+  `;
+
+  document.getElementById('map').innerHTML= "";
+  let map = data;
+  usermap = map;
+  for(let i=0 ; i<mapSize ; i++){
+    for(let j=0; j<mapSize ; j++){
+      document.getElementById('map').innerHTML +=`<div class="square ${map[i][j].color}" id="${i},${j}" onclick="active('${i},${j}')" oncontextmenu="setTo('${i},${j}');return false;">
+      <div class="assets">
+          ${map[i][j].capital ? "<span>C</span>" : ""}
+          ${map[i][j].tower ? "<span>T</span>" : ""}
+          ${map[i][j].goldMine ? "<span>G</span>" : ""}
+          ${map[i][j].fortification ? "<span>F</span>" : ""}
+      </div>
+      <p class="troops">
+      ${map[i][j].troops}
+      </p>
+      </div>`;
+    }
+  }
+
+  document.querySelector('#title').innerHTML = "Waiting For Other Players To Finsih Their turn"
+})
+
 
 
 socket.on('stats', (data)=>{
@@ -205,4 +283,10 @@ socket.on('stats', (data)=>{
   territory = data.territory;
   updateStats();
 
+})
+
+socket.on("playerEndedTurn",(data)=>{
+  document.querySelector(".ended").innerHTML += `
+    <p>${data.username}</p>
+  `;
 })

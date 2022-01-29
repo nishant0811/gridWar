@@ -17,7 +17,7 @@ let mapSize = 20;
 let gameMap =[];
 let usersMap = [];
 let gameStats=[];
-
+let eliminatedPlayers = [];
 
 let players = [];
 
@@ -119,6 +119,7 @@ function play(){
 
   actionList.forEach((action) => {
     try{
+      let eliminatedIndex = -1;
     for(let i=0; i<gameStats.length ; i++){
       if(gameStats[i].id == action.id){
         let cords = action.from.split(",");
@@ -164,12 +165,15 @@ function play(){
 
         //Attack || Movement of Troops;
         if(action.type == 'attack'){
+
           if(gameMap[xx][yy].owned == gameStats[i].id && gameStats[i].energy >= energyCost.attack){
+
             let attackingTroops = Math.min(gameMap[xx][yy].troops , action.troops);
 
             let fcord = action.to.split(",")
             let axx = parseInt(fcord[0]);
             let ayy = parseInt(fcord[1]);
+
 
             if(gameMap[axx][ayy].owned == gameStats[i].id){
               gameMap[xx][yy].troops -= attackingTroops;
@@ -193,6 +197,25 @@ function play(){
                         gameStats[j].goldMine -=1;
                       }
                       gameStats[j].territory -=1;
+
+                      if(gameMap[axx][ayy].capital){
+                        for(let aaa=0 ; aaa<mapSize ;aaa++){
+                          for(let bbb=0; bbb<mapSize ; bbb++){
+                            if(gameMap[aaa][bbb].owned == gameStats[j].id && (aaa != axx || bbb != ayy)){
+
+                              gameMap[aaa][bbb].owned = gameStats[i].id;
+                              gameMap[aaa][bbb].troops = 0;
+                              gameMap[aaa][bbb].goldMine = false;
+                              gameMap[aaa][bbb].fortification = false;
+                              gameMap[aaa][bbb].color = gameStats[i].color;
+
+                            }
+                          }
+                        }
+                        gameStats[i].gold += gameStats[j].gold;
+                        gameStats[j].gold = 0;
+                        eliminatedIndex = j;
+                      }
                     }
                   }
 
@@ -221,14 +244,48 @@ function play(){
                 }
               }
             }
+
+          }
+        }
+
+
+        //Move Capital
+        if(action.type == 'moveCapital'){
+          console.log(action);
+          let mccord = action.from.split(",")
+          let mcx = parseInt(mccord[0]);
+          let mcy = parseInt(mccord[1]);
+
+          for(let i=0; i<gameStats.length ; i++){
+            if(gameStats[i].id == action.id){
+
+              let cx = gameStats[i].capital.x;
+              let cy = gameStats[i].capital.y;
+              if(gameMap[cx][cy].owned == action.id && gameMap[mcx][mcy].owned == action.id && gameStats[i].energy > energyCost.moveCapital){
+                gameStats[i].capital.x = mcx;
+                gameStats[i].capital.y = mcy;
+
+                gameMap[cx][cy].capital = false;
+                gameMap[mcx][mcy].capital = true;
+                gameStats[i].energy -= energyCost.moveCapital;
+              }
+            }
           }
         }
 
       }
     }
+
+    if(eliminatedIndex > -1){
+      let elid = gameStats[eliminatedIndex].id;
+      eliminatedPlayers.push(elid);
+      gameStats.splice(eliminatedIndex , 1 );
+      usersMap.splice(eliminatedIndex,1);
+
+    }
   }
   catch(e){
-    console.log(e.message);
+    console.log(e);
   }
 
   });
@@ -274,7 +331,7 @@ io.on('connection' , socket =>{
     for(let i=0; i<Math.min(maxPlayers , users.length) ; i++){
       let user = users[i];
       let position = generatePosition();
-      position = i?[9,4]:[9,14]
+      position = i?[9,4]:[9,5]
       console.log(position);
       let userGameData ={
         id : user.id,
@@ -331,6 +388,10 @@ io.on('connection' , socket =>{
         endTurn : 0,
         color : color[i],
         username : user.username,
+        capital :{
+          x:position[0],
+          y:position[1]
+        }
       }
 
       gameStats.push(stats);
@@ -353,6 +414,8 @@ io.on('connection' , socket =>{
       io.to(id).emit('gameData' , payload);
       io.to(id).emit('stats' , gameStats[i]);
     }
+
+
   })
 
 
@@ -370,6 +433,7 @@ io.on('connection' , socket =>{
         if(gameStats[i].endTurn == 0){
           gameStats[i].endTurn = 1;
           endTurn++;
+          io.emit('playerEndedTurn' , {username : gameStats[i].username});
         }
       }
     }
@@ -386,15 +450,16 @@ io.on('connection' , socket =>{
     play();
     playing = false;
 
+    console.log("Updating user map");
     updatePlayerMap();
 
-    for(let i=0; i<Math.min(maxPlayers , usersMap.length);i++){
+    for(let i=0; i<gameStats.length;i++){
       let payload = {
         map : [],
         stats : gameStats[i]
       }
       let id = gameStats[i].id;
-      usersMap.forEach((user, i) => {
+      usersMap.forEach((user) => {
         if(user.id == id){
           payload.map = user.map
         }
@@ -403,9 +468,14 @@ io.on('connection' , socket =>{
       io.to(id).emit('gameData' , payload);
       io.to(id).emit('stats' , gameStats[i]);
     }
+
+    console.log(eliminatedPlayers);
+    for(let i=0; i<eliminatedPlayers.length ;i++){
+      io.to(eliminatedPlayers[i]).emit('gameDataE' , gameMap)
+    }
+
     }
   })
-
 
 
 
@@ -419,6 +489,13 @@ io.on('connection' , socket =>{
         console.log(users);
       }
 
+    }
+
+    for(let i=0 ; i<gameStats.length ;i++){
+      if(playerDisconnected == gameStats[i].id){
+        gameStats.splice(i,1);
+        eliminatedPlayers.push(playerDisconnected)
+      }
     }
   })
 
