@@ -250,6 +250,8 @@ socket.on('gameData' , (data)=>{
 socket.on('gameDataE' , (data)=>{
   disableButtons();
   disableEndTurn();
+
+  document.querySelector(".waitingModal").classList.remove("active");
   document.querySelector(".ended").innerHTML = `
   `;
 

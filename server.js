@@ -221,10 +221,10 @@ function play(){
 
                   if(gameMap[axx][ayy].owned == ""){
 
-                    gameStats[i].gold += 10;
+                    gameStats[i].gold += 15;
                   }
                   else{
-                    gameStats[i].gold += 50;
+                    gameStats[i].gold += 25;
                   }
 
                   gameMap[axx][ayy].owned = gameStats[i].id;
@@ -291,7 +291,7 @@ function play(){
   });
 
   for(let i=0; i<gameStats.length ;i++){
-    gameStats[i].gold = gameStats[i].gold + gameStats[i].goldMine*5;
+    gameStats[i].gold = gameStats[i].gold + gameStats[i].goldMine*10;
     gameStats[i].energy = gameStats[i].energy + gameStats[i].territory;
   }
 
@@ -331,7 +331,6 @@ io.on('connection' , socket =>{
     for(let i=0; i<Math.min(maxPlayers , users.length) ; i++){
       let user = users[i];
       let position = generatePosition();
-      position = i?[9,4]:[9,5]
       console.log(position);
       let userGameData ={
         id : user.id,
